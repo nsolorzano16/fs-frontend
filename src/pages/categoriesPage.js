@@ -121,7 +121,6 @@ export const CategoriesPage = () => {
     };
     const resp = await fetch(`${API_URL}/category`, requestOptions);
     const { categories } = await resp.json();
-    console.log(categories);
 
     setCategoriesList(categories);
   };
@@ -206,7 +205,7 @@ export const CategoriesPage = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>Description</TableCell>
-                  <TableCell>Created By</TableCell>
+                  <TableCell>User</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
