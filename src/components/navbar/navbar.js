@@ -7,7 +7,7 @@ import { types } from '../../types/types';
 export const NavBar = () => {
   const history = useHistory();
   const {
-    user: { logged },
+    user: { logged, role },
     dispatch,
   } = useContext(AppContext);
 
@@ -58,7 +58,7 @@ export const NavBar = () => {
                 </li>
               ) : null}
 
-              {logged ? (
+              {logged && role === 'admin' ? (
                 <li className='nav-item'>
                   <NavLink
                     exact
@@ -88,7 +88,7 @@ export const NavBar = () => {
                     exact
                     activeClassName='active'
                     className='nav-link '
-                    to='/categories'
+                    to='/posts'
                   >
                     Posts
                   </NavLink>

@@ -12,6 +12,7 @@ import { CategoriesPage } from '../pages/categoriesPage';
 import { PrivateRoute } from './privateRoute';
 import { AppContext } from '../context/appContext';
 import { PublicRoute } from './publicRoute';
+import { PostsPage } from '../pages/postsPage';
 
 export const AppRouter = () => {
   const { user } = useContext(AppContext);
@@ -26,16 +27,25 @@ export const AppRouter = () => {
             component={LoginPage}
             isAuthenticated={user.logged}
           />
-          <PrivateRoute
-            exact
-            path='/users'
-            component={UsersPage}
-            isAuthenticated={user.logged}
-          />
+          {user.role === 'admin' ? (
+            <PrivateRoute
+              exact
+              path='/users'
+              component={UsersPage}
+              isAuthenticated={user.logged}
+            />
+          ) : null}
           <PrivateRoute
             exact
             path='/categories'
             component={CategoriesPage}
+            isAuthenticated={user.logged}
+          />
+
+          <PrivateRoute
+            exact
+            path='/posts'
+            component={PostsPage}
             isAuthenticated={user.logged}
           />
           <Route exact path='/' component={HomePage} />

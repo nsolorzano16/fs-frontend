@@ -1,10 +1,14 @@
-import { Redirect, Route } from 'react-router-dom';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export const PrivateRoute = (
-  { isAuthenticated, component: Component },
+import { Route, Redirect } from 'react-router-dom';
+
+export const PrivateRoute = ({
+  isAuthenticated,
+
+  component: Component,
   ...rest
-) => {
+}) => {
   return (
     <Route
       {...rest}
