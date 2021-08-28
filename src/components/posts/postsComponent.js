@@ -5,61 +5,69 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  IconButton,
   Typography,
 } from '@material-ui/core';
 
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 const API_URL = process.env.REACT_APP_API_URL || '';
 
 export const PostsComponent = () => {
   const [posts, setPosts] = useState([]);
 
-  const getPosts = async () => {
+  useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
+      signal,
     };
-    const resp = await fetch(`${API_URL}/post`, headers);
-    const { posts } = await resp.json();
-
-    setPosts(posts);
-  };
-
-  useEffect(() => {
-    getPosts();
+    fetch(`${API_URL}/post`, headers)
+      .then((resp) => resp.json())
+      .then((data) => {
+        const { posts } = data;
+        setPosts(posts);
+      });
   }, []);
 
-  return posts.map((post) => (
-    <div key={post.id}>
-      <Card>
-        <CardHeader
-          title={post.title.toUpperCase()}
-          subheader={
-            <div>
-              {`Created by: ${post.user.firstName} ${post.user.lastName} `}
+  return posts.length > 0 ? (
+    posts.map((post) => (
+      <div key={post.id}>
+        <br />
+        <Card>
+          <CardHeader
+            title={
+              <Typography
+                variant='h4'
+                align='center'
+              >{`${post.title.toUpperCase()}`}</Typography>
+            }
+            subheader={
+              <Typography>{`Category: ${post.category.description}`}</Typography>
+            }
+          />
+
+          <CardContent>
+            <Typography variant='body1' component='p' align='justify' paragraph>
+              {`${post.description}`}
+            </Typography>
+          </CardContent>
+
+          <CardActions disableSpacing>
+            <Typography variant='caption'>
+              {`By: ${post.user.firstName} ${post.user.lastName} `}
               <br />
-              {`Created At: ${new Date(post.createdAt).toUTCString()}`}
-            </div>
-          }
-        />
-
-        <CardContent>
-          <Typography variant='body2' component='p'>
-            {`${post.description}`}
-          </Typography>
-        </CardContent>
-
-        <CardActions disableSpacing>
-          <IconButton aria-label='delete'>
-            <DeleteIcon />
-          </IconButton>
-          <IconButton aria-label='edit'>
-            <EditIcon />
-          </IconButton>
-        </CardActions>
-      </Card>
+              {`Created At: ${new Date(post.createdAt)}`}
+              <br />
+              {`Updated At: ${new Date(post.updatedAt)}`}
+            </Typography>
+          </CardActions>
+        </Card>
+        <br />
+      </div>
+    ))
+  ) : (
+    <div>
+      <h3>No Posts yet...!</h3>
     </div>
-  ));
+  );
 };

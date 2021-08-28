@@ -294,30 +294,40 @@ export const UsersPage = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {usersList.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell component='th' scope='row'>
-                      {row.firstName}
-                    </TableCell>
-                    <TableCell>{row.lastName}</TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>{row.role}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        aria-label='delete'
-                        onClick={() => handleDeleteUser(row.id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label='edit'
-                        onClick={() => handleEditUser(row)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </TableCell>
+                {usersList.length === 0 ? (
+                  <TableRow>
+                    <TableCell>No data</TableCell>
+                    <TableCell>No data</TableCell>
+                    <TableCell>No data</TableCell>
+                    <TableCell>No data</TableCell>
+                    <TableCell>No data</TableCell>
                   </TableRow>
-                ))}
+                ) : (
+                  usersList.map((row) => (
+                    <TableRow key={row.id}>
+                      <TableCell component='th' scope='row'>
+                        {row.firstName}
+                      </TableCell>
+                      <TableCell>{row.lastName}</TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell>{row.role}</TableCell>
+                      <TableCell>
+                        <IconButton
+                          aria-label='delete'
+                          onClick={() => handleDeleteUser(row.id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label='edit'
+                          onClick={() => handleEditUser(row)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </TableContainer>

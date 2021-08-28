@@ -16,6 +16,7 @@ import {
   IconButton,
   Select,
   MenuItem,
+  TextField,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -94,7 +95,7 @@ export const PostsPage = () => {
       return false;
     } else if (
       description.trim().length === 0 ||
-      description.trim().length < 3
+      description.trim().length < 50
     ) {
       showMessage('Error!', 'Write a valid description');
       return false;
@@ -195,8 +196,13 @@ export const PostsPage = () => {
     setRespDelete(data);
   };
 
-  const handleEditPost = (post) => {
-    setFormValues(post);
+  const handleEditPost = ({ id, title, description, category: { _id } }) => {
+    setFormValues({
+      id,
+      title,
+      description,
+      category: _id,
+    });
     setImEditing(true);
   };
 
@@ -209,7 +215,7 @@ export const PostsPage = () => {
           <form onSubmit={handleSubmit}>
             <Card>
               <CardHeader
-                title={imEditing ? 'Edit Category' : 'Add Category'}
+                title={imEditing ? 'Edit Post' : 'Add Post'}
               ></CardHeader>
               <CardContent>
                 <FormControl fullWidth={true} required={true}>
@@ -217,7 +223,7 @@ export const PostsPage = () => {
                   <Input
                     id='title'
                     aria-describedby='my-helper-text'
-                    type='title'
+                    type='text'
                     name='title'
                     value={title}
                     onChange={handleInputChange}
@@ -241,6 +247,23 @@ export const PostsPage = () => {
                     ))}
                   </Select>
                 </FormControl>
+                <br />
+                <br />
+                <TextField
+                  id='description'
+                  label='Description'
+                  required={true}
+                  type='text'
+                  name='description'
+                  value={description}
+                  onChange={handleInputChange}
+                  multiline
+                  rows={7}
+                  fullWidth
+                  helperText='min 50 characters.'
+                />
+                <br />
+                <br />
                 <Button variant='contained' color='primary' type='submit'>
                   {imEditing ? 'Edit' : 'Save'}
                 </Button>
@@ -254,6 +277,7 @@ export const PostsPage = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>Title</TableCell>
+                  <TableCell>Category</TableCell>
                   <TableCell>User</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
@@ -262,9 +286,9 @@ export const PostsPage = () => {
                 {posts.map((row) => (
                   <TableRow key={row.id}>
                     <TableCell component='th' scope='row'>
-                      {row.description}
+                      {row.title}
                     </TableCell>
-
+                    <TableCell>{`${row.category.description}`}</TableCell>
                     <TableCell>{`${row.user.firstName} ${row.user.lastName}`}</TableCell>
                     <TableCell>
                       <IconButton

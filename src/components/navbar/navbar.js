@@ -7,7 +7,7 @@ import { types } from '../../types/types';
 export const NavBar = () => {
   const history = useHistory();
   const {
-    user: { logged, role },
+    user: { logged, role, firstName, lastName },
     dispatch,
   } = useContext(AppContext);
 
@@ -32,6 +32,9 @@ export const NavBar = () => {
     <div>
       <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
         <div className='container-fluid'>
+          <div className='navbar-brand'>
+            {logged ? `Welcome: ${firstName} ${lastName}` : ''}
+          </div>
           <div className='collapse navbar-collapse' id='navbarNav'>
             <ul className='navbar-nav ml-auto'>
               <li className='nav-item'>
